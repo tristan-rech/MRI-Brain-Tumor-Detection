@@ -9,8 +9,14 @@ import random
 # intialize app
 app = Flask(__name__, static_folder='mri-images')
 
+# directory where this script is located
+script_dir = os.path.dirname(__file__)
+# path to the model directory
+model_dir = os.path.join(script_dir, 'models')
+# path to the model file
+model_path = os.path.join(model_dir, 'brain_tumor_cnn_classifier.keras')
 # load model
-CNN = tf.keras.models.load_model("models/brain_tumor_cnn_classifier.keras", compile=False)
+CNN = tf.keras.models.load_model(model_path, compile=False)
 CNN.compile(optimizer=tf.keras.optimizers.Adamax(learning_rate=0.001), 
             loss='categorical_crossentropy', 
             metrics=['accuracy'])
