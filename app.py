@@ -8,6 +8,7 @@ import random
 import sys
 
 import logging
+import hashlib
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -25,11 +26,36 @@ model_path = os.path.join(model_dir, 'brain_tumor_cnn_classifier.keras')
 # Log model path
 logger.info(f"Model path: {model_path}")
 
-# Check if the model file exists
+# check if the model file exists
 if os.path.exists(model_path):
     logger.info("Model file found.")
 else:
     logger.error("Model file not found.")
+
+# check model file
+def get_file_info(file_path):
+    file_info = {
+        'exists': os.path.exists(file_path),
+        'size': None,
+        'md5_checksum': None
+    }
+
+    if file_info['exists']:
+        file_info['size'] = os.path.getsize(file_path)
+
+        # Calculate MD5 checksum
+        hash_md5 = hashlib.md5()
+        with open(file_path, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_md5.update(chunk)
+        file_info['md5_checksum'] = hash_md5.hexdigest()
+
+    return file_info
+
+model_info = get_file_info(model_path)
+logger.info(f"Model Exists: {model_info['exists']}")
+logger.info(f"Model File Size: {model_info['size']} bytes")
+logger.info(f"Model MD5 Checksum: {model_info['md5_checksum']}")
 
 try:
     CNN = tf.keras.models.load_model(model_path, compile=False)
@@ -42,9 +68,9 @@ try:
     model_summary_str = "\n".join(model_summary)
     logger.info(model_summary_str)
 
-    for layer in CNN.layers:
-        weights = layer.get_weights()
-        logger.info(f"Layer: {layer.name}, Weights: {weights}")
+    # for layer in CNN.layers:
+    #     weights = layer.get_weights()
+    #     logger.info(f"Layer: {layer.name}, Weights: {weights}")
 
     CNN.compile(optimizer=tf.keras.optimizers.Adamax(learning_rate=0.001), 
                 loss='categorical_crossentropy', 
