@@ -9,6 +9,9 @@
             height: 500px;
             object-fit: cover;
         }
+        #loadingIndicator {
+            display: none; /* Hidden by default */
+        }
     </style>
 </head>
 <body>
@@ -18,18 +21,26 @@
         <p id="actualLabel">Actual Label: </p>
         <p id="predictedLabel">Predicted Label: </p>
         <button onclick="getNextImage()">Load Random Image</button>
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator">Loading...</div>
     </div>
     
     <script>
         function getNextImage() {
+            document.getElementById('loadingIndicator').style.display = 'block'; // Show loading indicator
+
             fetch('/get-random-image')
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('testImage').src = data.image_path;
                     document.getElementById('actualLabel').innerText = 'Actual Label: ' + data.actual_label;
                     document.getElementById('predictedLabel').innerText = 'Predicted Label: ' + data.predicted_label;
+                    document.getElementById('loadingIndicator').style.display = 'none'; // Hide loading indicator
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('loadingIndicator').style.display = 'none'; // Hide loading indicator
+                });
         }
 
         // load an image when the page loads
