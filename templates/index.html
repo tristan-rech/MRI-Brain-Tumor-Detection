@@ -4,30 +4,69 @@
     <meta charset="UTF-8">
     <title>Brain Tumor Classification</title>
     <style>
+        body {
+            text-align: center; /* align text to the center */
+            font-family: Arial, sans-serif; /* set a default font */
+        }
+        .container {
+            width: 60%; /* set the width of the container */
+            margin: auto; /* auto margins for horizontal centering */
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* add a shadow for depth */
+            border-radius: 10px; /* round the corners */
+            background-color: #f0f0f0; /* set a background color */
+            margin-top: 50px; /* adds some space at the top */
+        }
         #testImage {
-            width: 500px;
-            height: 500px;
-            object-fit: cover;
+        width: 500px;
+        height: 500px;
+        object-fit: cover; /* resize the image to cover the element's box */
+        border-radius: 10px; /* round the corners of the image */
         }
         #loadingIndicator {
-            display: none; /* Hidden by default */
+            display: none; /* hidden by default */
+            position: fixed; /* positioned relative to the viewport */
+            top: 50%; /* center vertically */
+            left: 50%; /* center horizontally */
+            transform: translate(-50%, -50%); /* adjust the position */
+            font-size: 2em; /* larger text */
+            color: #000; /* text color */
+            z-index: 1000; /* ensure it's on top */
+            background-color: rgba(255, 255, 255, 0.8); /* semi-transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h1>Brain Tumor Image Prediction</h1>
-    <div>
+    <div class="container">
+        <h1>Brain Tumor Image Prediction</h1>
         <img id="testImage" src="" alt="Test Image">
         <p id="actualLabel">Actual Label: </p>
         <p id="predictedLabel">Predicted Label: </p>
         <button onclick="getNextImage()">Load Random Image</button>
-        <!-- Loading Indicator -->
-        <div id="loadingIndicator">Loading...</div>
     </div>
+
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator">Loading...</div>
     
     <script>
         function getNextImage() {
-            document.getElementById('loadingIndicator').style.display = 'block'; // Show loading indicator
+            document.getElementById('loadingIndicator').style.display = 'block'; // show loading indicator
 
             fetch('/get-random-image')
                 .then(response => response.json())
@@ -35,11 +74,11 @@
                     document.getElementById('testImage').src = data.image_path;
                     document.getElementById('actualLabel').innerText = 'Actual Label: ' + data.actual_label;
                     document.getElementById('predictedLabel').innerText = 'Predicted Label: ' + data.predicted_label;
-                    document.getElementById('loadingIndicator').style.display = 'none'; // Hide loading indicator
+                    document.getElementById('loadingIndicator').style.display = 'none'; // hide loading indicator
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    document.getElementById('loadingIndicator').style.display = 'none'; // Hide loading indicator
+                    document.getElementById('loadingIndicator').style.display = 'none'; // hide loading indicator
                 });
         }
 
