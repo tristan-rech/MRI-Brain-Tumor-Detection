@@ -22,6 +22,8 @@ CNN = None  # global variable to hold the CNN model
 
 def load_model():
     global CNN
+    if CNN is not None:
+        return  # model already loaded
     script_dir = os.path.dirname(__file__)
     model_json_path = os.path.join(script_dir, 'models', 'CNN_structure.json')
 
@@ -44,12 +46,9 @@ def load_model():
     except Exception as e:
         logger.error(f"Error loading model: {e}")
 
-with app.app_context():
-    logger.info("Loading model...")
-    load_model()
-
 # function for retrieving prediction from model given an image path
 def get_model_prediction(image_path):
+    load_model()
     try:
         # load and preprocess the image
         img = Image.open(image_path).resize((224, 224))
