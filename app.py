@@ -33,6 +33,18 @@ else:
 
 try:
     CNN = tf.keras.models.load_model(model_path, compile=False)
+    
+    logger.info(f"Model Type: {type(CNN)}")
+    logger.info("Model Summary:")
+    model_summary = []
+    CNN.summary(print_fn=lambda x: model_summary.append(x))
+    model_summary_str = "\n".join(model_summary)
+    logger.info(model_summary_str)
+
+    for layer in CNN.layers:
+        weights = layer.get_weights()
+        logger.info(f"Layer: {layer.name}, Weights: {weights}")
+
     CNN.compile(optimizer=tf.keras.optimizers.Adamax(learning_rate=0.001), 
                 loss='categorical_crossentropy', 
                 metrics=['accuracy'])
