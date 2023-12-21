@@ -33,7 +33,8 @@ else:
 
 try:
     CNN = tf.keras.models.load_model(model_path, compile=False)
-    
+    logger.info("Model loaded successfully.")
+
     logger.info(f"Model Type: {type(CNN)}")
     logger.info("Model Summary:")
     model_summary = []
@@ -48,9 +49,9 @@ try:
     CNN.compile(optimizer=tf.keras.optimizers.Adamax(learning_rate=0.001), 
                 loss='categorical_crossentropy', 
                 metrics=['accuracy'])
-    logger.info("Model loaded successfully.")
 except Exception as e:
     logger.error(f"Error loading model: {e}")
+
     
 # function for retrieving prediction from model given an image path
 def get_model_prediction(image_path):
