@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brain Tumor Classification</title>
+    <style>
+        #testImage {
+            width: 500px;
+            height: 500px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <h1>Brain Tumor Image Prediction</h1>
+    <div>
+        <img id="testImage" src="" alt="Test Image">
+        <p id="actualLabel">Actual Label: </p>
+        <p id="predictedLabel">Predicted Label: </p>
+        <button onclick="getNextImage()">Load Random Image</button>
+    </div>
+    
+    <script>
+        function getNextImage() {
+            fetch('/get-random-image')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('testImage').src = data.image_path;
+                    document.getElementById('actualLabel').innerText = 'Actual Label: ' + data.actual_label;
+                    document.getElementById('predictedLabel').innerText = 'Predicted Label: ' + data.predicted_label;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // load an image when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            getNextImage();
+        }, false);
+    </script>
+</body>
+</html>

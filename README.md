@@ -2,7 +2,7 @@
 ### Written by Tristan Pedro
 
 ## Overview
-Currently, there is just a notebook, named tumor-classification-cnn.ipynb, that details the development of a deep learning model classifying brain tumors from a MRI brain image dataset. It includes steps from preprocessing and loading data, constructing and training a Convolutional Neural Network (CNN), to evaluating and visualizing the models performance. There are future plans to expand this into a website where predictions are made to user uploaded images, and the test set.
+Currently, there is a notebook, named tumor-classification-cnn.ipynb, that details the development of a deep learning model classifying brain tumors from a MRI brain image dataset. It includes steps from preprocessing and loading data, constructing and training a Convolutional Neural Network (CNN), to evaluating and visualizing the models performance. There are future plans to expand this into a website where predictions are made to user uploaded images, and the test set.
 
 ## Necessary Imports
 - System Modules: os and itertools
