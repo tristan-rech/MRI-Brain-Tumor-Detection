@@ -15,6 +15,7 @@ script_dir = os.path.dirname(__file__)
 model_dir = os.path.join(script_dir, 'models')
 # path to the model file
 model_path = os.path.join(model_dir, 'brain_tumor_cnn_classifier.keras')
+print(model_path)
 # load model
 CNN = tf.keras.models.load_model(model_path, compile=False)
 CNN.compile(optimizer=tf.keras.optimizers.Adamax(learning_rate=0.001), 
