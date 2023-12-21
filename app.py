@@ -16,10 +16,6 @@ logger = logging.getLogger(__name__)
 # intialize app
 app = Flask(__name__, static_folder='mri-images')
 
-# Log Python and TensorFlow versions
-logger.info(f"Python version: {sys.version}")
-logger.info(f"TensorFlow version: {tf.__version__}")
-
 script_dir = os.path.dirname(__file__)
 model_dir = os.path.join(script_dir, 'models')
 model_path = os.path.join(model_dir, 'brain_tumor_cnn_classifier.keras')
@@ -28,61 +24,17 @@ model_json_path = os.path.join(script_dir, 'models', 'CNN_structure.json')
 with open(model_json_path, 'r') as json_file:
     model_json = json_file.read()
 
-# Log model path
-logger.info(f"Model path: {model_path}")
-
-# check if the model file exists
-if os.path.exists(model_path):
-    logger.info("Model file found.")
-else:
-    logger.error("Model file not found.")
-
-# check model file
-def get_file_info(file_path):
-    file_info = {
-        'exists': os.path.exists(file_path),
-        'size': None,
-        'md5_checksum': None
-    }
-
-    if file_info['exists']:
-        file_info['size'] = os.path.getsize(file_path)
-
-        # Calculate MD5 checksum
-        hash_md5 = hashlib.md5()
-        with open(file_path, "rb") as f:
-            for chunk in iter(lambda: f.read(4096), b""):
-                hash_md5.update(chunk)
-        file_info['md5_checksum'] = hash_md5.hexdigest()
-
-    return file_info
-
-model_info = get_file_info(model_path)
-logger.info(f"Model Exists: {model_info['exists']}")
-logger.info(f"Model File Size: {model_info['size']} bytes")
-logger.info(f"Model MD5 Checksum: {model_info['md5_checksum']}")
-
 try:
+    # load model
     CNN = tf.keras.models.model_from_json(model_json)
 
-    # Load and set model weights
+    # load and set model weights
     weights_path = os.path.join(script_dir, 'models', 'CNN_weights.pkl')
     with open(weights_path, 'rb') as weights_file:
         weights = pickle.load(weights_file)
         CNN.set_weights(weights)
-    logger.info("Model loaded successfully.")
 
-    logger.info(f"Model Type: {type(CNN)}")
-    logger.info("Model Summary:")
-    model_summary = []
-    CNN.summary(print_fn=lambda x: model_summary.append(x))
-    model_summary_str = "\n".join(model_summary)
-    logger.info(model_summary_str)
-
-    # for layer in CNN.layers:
-    #     weights = layer.get_weights()
-    #     logger.info(f"Layer: {layer.name}, Weights: {weights}")
-
+    # compile model
     CNN.compile(optimizer=tf.keras.optimizers.Adamax(learning_rate=0.001), 
                 loss='categorical_crossentropy', 
                 metrics=['accuracy'])
@@ -108,7 +60,6 @@ def get_model_prediction(image_path):
         predicted_index = np.argmax(prediction[0])
         class_labels = ['glioma', 'meningioma', 'no tumor', 'pituitary']
         predicted_class = class_labels[predicted_index]
-        logger.info(f"Prediction for image {image_path}: {predicted_class}")
         return predicted_class
     except Exception as e:
         logger.error(f"Error in get_model_prediction: {e}")
@@ -130,7 +81,6 @@ def get_random_image():
         image_path = os.path.join(image_dir, image_name)
         predicted_label = get_model_prediction(image_path)
         web_accessible_image_path = url_for('static', filename=f'{selected_class}/{image_name}')
-        logger.info(f"Random image selected: {image_path}")
         return jsonify({
             'image_path': web_accessible_image_path,
             'actual_label': selected_class,
