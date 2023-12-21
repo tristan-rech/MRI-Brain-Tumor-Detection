@@ -6,6 +6,7 @@ from tensorflow import keras
 import os
 import random
 import sys
+import pickle
 
 import logging
 import hashlib
@@ -22,6 +23,10 @@ logger.info(f"TensorFlow version: {tf.__version__}")
 script_dir = os.path.dirname(__file__)
 model_dir = os.path.join(script_dir, 'models')
 model_path = os.path.join(model_dir, 'brain_tumor_cnn_classifier.keras')
+model_json_path = os.path.join(script_dir, 'models', 'CNN_structure.json')
+
+with open(model_json_path, 'r') as json_file:
+    model_json = json_file.read()
 
 # Log model path
 logger.info(f"Model path: {model_path}")
@@ -58,7 +63,13 @@ logger.info(f"Model File Size: {model_info['size']} bytes")
 logger.info(f"Model MD5 Checksum: {model_info['md5_checksum']}")
 
 try:
-    CNN = tf.keras.models.load_model(model_path, compile=False)
+    CNN = tf.keras.models.model_from_json(model_json)
+
+    # Load and set model weights
+    weights_path = os.path.join(script_dir, 'models', 'CNN_weights.pkl')
+    with open(weights_path, 'rb') as weights_file:
+        weights = pickle.load(weights_file)
+        CNN.set_weights(weights)
     logger.info("Model loaded successfully.")
 
     logger.info(f"Model Type: {type(CNN)}")
