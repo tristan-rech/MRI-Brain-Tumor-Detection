@@ -97,3 +97,52 @@ The development of this project has been both challenging and rewarding, offerin
 - **UI/UX Design**: Improved my skills in user interface and experience design. The constraints imposed by the free version of the hosting service made it crucial to implement a user interface that could effectively visualize loading states, significantly aiding user experience.
 
 - **Adaptability and Learning**: The project underscored the importance of adaptability and continuous learning in the fast-paced and ever-changing field of technology. It reinforced the idea that facing and overcoming new challenges is a constant in this field.
+
+## Running Notebook & Web Application Locally
+
+This section outlines the steps to run the Flask application locally and how to work with the Jupyter Notebook.
+
+### Prerequisites
+- Python 3.11
+- pip (Python package manager)
+- Jupyter Notebook (for running the `tumor-classification-cnn.ipynb` file)
+- Access to the internet for downloading the dataset (if wanting to run the Jupyter Notebook)
+
+### Running the Jupyter Notebook
+1. **Download the Dataset**:
+   - The dataset for the Jupyter Notebook is not included in the GitHub repository. You need to download it from [Kaggle](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset).
+2. **Place the Dataset**:
+   - After downloading, extract the dataset and place it in the designated folder within the project directory.
+3. **Open the Notebook**:
+   - Navigate to the notebook directory and launch Jupyter Notebook:
+     ```
+     jupyter notebook
+     ```
+   - Open the `tumor-classification-cnn.ipynb` file in the Jupyter interface.
+
+### Setting Up the Flask Application
+1. **Clone the Repository**:
+    ```
+    git clone https://github.com/tripedro/MRI-Brain-Tumor-Detection.git
+    ```
+
+2. **Navigate to the Project Directory**:
+    ```
+    cd MRI-Brain-Tumor-Detection
+    ```
+
+3. **Install Dependencies**:
+- Ensure all required Python packages are installed:
+  ```
+  pip install -r requirements.txt
+  ```
+
+### Running the Flask Application
+1. **Start the Flask Server**:
+    ```
+    python app.py
+    ```
+2. **Access the Application**:
+- Open a web browser and go to `http://127.0.0.1:5000` (or what it tells you to go to) to view the application.
+
+Follow these steps to set up and run the MRI-Brain-Tumor-Detection project on your local machine for development and testing purposes.
