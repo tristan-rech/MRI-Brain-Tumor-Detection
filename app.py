@@ -46,9 +46,11 @@ def load_model():
     except Exception as e:
         logger.error(f"Error loading model: {e}")
 
+load_model()
+
 # function for retrieving prediction from model given an image path
 def get_model_prediction(image_path):
-    load_model()
+    #load_model()
     try:
         # load and preprocess the image
         img = Image.open(image_path).resize((224, 224))
